@@ -30,6 +30,13 @@ export default async ({ to, from, next, redirect }) => {
     redirect('/auth')
   } else if (username && password && level) {
     const data = await get_token(makeFormData())
+    if (!data) {
+      localStorage.removeItem('username')
+      localStorage.removeItem('password')
+      localStorage.removeItem('level')
+      redirect('/auth')
+      return
+    }
     const { access_token, user_id, level } = data
 
     store.$state.access_token = access_token
